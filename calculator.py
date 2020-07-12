@@ -1,6 +1,9 @@
 # import the gui module tkinter
 from tkinter import *
 
+global sign
+global loaded_Number
+
 # Color for BUTTONS Hex: #D4D4D2
 # Color for LABLE Hex: #1C1C1C
 # Color for AC, +/-, % Hex: #505050
@@ -13,32 +16,74 @@ window.title('Python Calculator')
 
 # If we want the buttons to do things we need to create a function
 def button_clicked(number):
+    result_field.delete(0, END)
     start = result_field.get()
     result_field.delete(0, END)
     result_field.insert(0, start + number)
 
 
-def button_multiply_clicked(number):
-    currentNumber = result_field.get()
+def button_add_clicked():
+    global sign
+    sign = 1
+    operand_One = result_field.get()
+    global loaded_Number
+    loaded_Number = int(operand_One)
+
     result_field.delete(0, END)
 
-def button_divide_clicked(number):
-    return
+
+def button_subtract_clicked():
+    global sign
+    sign = 2
+
+    operand_One = result_field.get()
+    global loaded_Number
+    loaded_Number = int(operand_One)
+
+    result_field.delete(0, END)
 
 
-def button_add_clicked(number):
-    return
+def button_multiply_clicked():
+    global sign
+    sign = 3
+
+    operand_One = result_field.get()
+    global loaded_Number
+    loaded_Number = int(operand_One)
+
+    result_field.delete(0, END)
 
 
-def button_subtract_clicked(number):
-    return
+def button_divide_clicked():
+    global sign
+    sign = 4
+
+    operand_One = result_field.get()
+    global loaded_Number
+    loaded_Number = int(operand_One)
+
+    result_field.delete(0, END)
 
 
-def button_equal_clicked(number):
-    return
+def button_equal_clicked():
+    global sign
+
+    operand_Two = result_field.get()
+    result_field.delete(0, END)
+
+    if sign == 1:
+        result_field.insert(0, float(loaded_Number + int(operand_Two)))
+    elif sign == 2:
+        result_field.insert(0, float(loaded_Number - int(operand_Two)))
+    elif sign == 3:
+        result_field.insert(0, float(loaded_Number * int(operand_Two)))
+    elif sign == 4:
+        result_field.insert(0, loaded_Number / int(operand_Two))
+
+    sign = 0
 
 
-def button_clear_clicked(number):
+def button_clear_clicked():
     result_field.delete(0, END)
 
 
@@ -53,6 +98,7 @@ result_field.grid(row=0, column=0, columnspan=5)
 # second is the text for the button
 # we can use padx and pady to set dimensions of button
 # command=myFunction will then trigger the function we defined
+# lamda allows for us to be able to add parameters
 button_1 = Button(window, text="1", padx=21, pady=20, command=lambda: button_clicked("1"))
 button_2 = Button(window, text="2", padx=21, pady=20, command=lambda: button_clicked("2"))
 button_3 = Button(window, text="3", padx=21, pady=20, command=lambda: button_clicked("3"))
@@ -64,13 +110,13 @@ button_8 = Button(window, text="8", padx=21, pady=20, command=lambda: button_cli
 button_9 = Button(window, text="9", padx=21, pady=20, command=lambda: button_clicked("9"))
 button_0 = Button(window, text="0", padx=21, pady=20, command=lambda: button_clicked("0"))
 
-button_multipy = Button(window, text=" * ", padx=18, pady=20, command=lambda: button_multiply_clicked())
-button_divide = Button(window, text="/", padx=23, pady=20, command=lambda: button_divide_clicked())
-button_add = Button(window, text="+", padx=21, pady=20, command=lambda: button_add_clicked())
-button_subtract = Button(window, text="-", padx=21, pady=20, command=lambda: button_subtract_clicked())
+button_multipy = Button(window, text=" * ", padx=18, pady=20, command=button_multiply_clicked)
+button_divide = Button(window, text="/", padx=23, pady=20, command=button_divide_clicked)
+button_add = Button(window, text="+", padx=21, pady=20, command=button_add_clicked)
+button_subtract = Button(window, text="-", padx=21, pady=20, command=button_subtract_clicked)
 
-button_equal = Button(window, text="=", padx=21, pady=20, command=lambda: button_equal_clicked())
-button_clear = Button(window, text="Clear", padx=39, pady=20, command=lambda: button_clear_clicked())
+button_equal = Button(window, text="=", padx=21, pady=20, command=button_equal_clicked)
+button_clear = Button(window, text="Clear", padx=10, pady=20, command=button_clear_clicked)
 # positioning the buttons on the screen
 
 button_1.grid(row=1, column=0)
@@ -92,7 +138,7 @@ button_divide.grid(row=2, column=4)
 button_add.grid(row=3, column=4)
 button_subtract.grid(row=4, column=4)
 
-button_equal.grid(row=4, column=4)
-button_clear.grid(row=4, column=1, columnspan=2)
+button_equal.grid(row=4, column=2)
+button_clear.grid(row=4, column=1)
 
 window.mainloop()
